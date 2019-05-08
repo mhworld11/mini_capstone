@@ -8,3 +8,4 @@
 
 product = Product.create(name: "Sony", price: 999.00, image_url: " ", description: "32' LCD" )
 product = Product.create(name: "Samsung", price: 1999.00, image_url: " ", description: "52' LCD" )
+product = Product.create(name: "Viveo", price: 899.00, image_url: " ", description: "27' LCD" )
