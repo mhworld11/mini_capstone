@@ -10,4 +10,14 @@ class Api::ProductsController < ApplicationController
     render 'display_all.json.jbuilder'
   end
 
+
+  def any_product
+    @greeting = "Pick a product from the database"
+    @list = Product.all
+    @answer = params[:product]
+
+
+
+    render 'any_product.json.jbuilder'
+  end
 end
