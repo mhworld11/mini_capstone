@@ -1,31 +1,34 @@
 class Api::ProductsController < ApplicationController
 
-  def display_product
-    @product = Product.first
-    render 'display_product.json.jbuilder'
-  end
-
-  def display_all
-    @products = Product.all
-    render 'display_all.json.jbuilder'
-  end
-
-
-  def any_product
-    @greeting = "Pick a product from the database"
-    @list = Product.all
-    @answer = params[:product]
-    @finish = "You've picked a #{@answer}"
-    render 'any_product.json.jbuilder'
-  end
+  
 
   def index
-    @products = Product.all
-    render 'index.json.jbuilder'  
+    # @products = Product.where("name iLIKE ?", "%#{params[:search]}%").order(:id)
+    @products = Product.all.order(:id)
+
+    if params[:search]
+      @products = @products.where("name iLIKE ?", "%#{params[:search]}%")
+    end
+
+    
+    if params[:discount]
+      @products = products.where("price > ?", 850) 
+    end
+
+    if params[:sort] == "price"
+      if params[:sort_order] == "desc"
+        @products = @products.order(price: :desc)
+      else
+        @products = products.order(:price)
+      end
+    end
   end
 
+    render 'index.json.jbuilder'
+
   def show
-    @product = Product.find_by(id: params[:id])
+    product_id = params[:id]
+    @product = Product.find_by(id: product_id)
     render 'show.json.jbuilder'
   end
 
@@ -33,9 +36,33 @@ class Api::ProductsController < ApplicationController
     @product = Product.new(
       name: params[:name], 
       price: params[:price], 
-      image_url: params[:image_url],
       description: params[:description])
-    @product.save
-    render 'show.json.jbuilder'
+
+    if @product.save
+      render 'show.json.jbuilder'
+    else
+      render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity
+    end 
   end
+
+  def update
+    @product = Product.find(params[:id])
+    @product.name = params[:name] || @product.title
+    @product.price = params[:price] || @product.price
+    # @product.image_url = params[:image] || @product.image_url
+    @product.description = params[:description] || @product.description
+
+    if @product.save
+      render 'show.json.jbuilder'
+    else
+      render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity
+    end
+  end
+
+    def destroy
+      @product = Product.find(params[:id])
+      @product.destroy
+      render json: {message: "Hola, lo hiciste! No mas producto!!!"}
+    end
+
 end
