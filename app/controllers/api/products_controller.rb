@@ -62,7 +62,7 @@ class Api::ProductsController < ApplicationController
     def destroy
       @product = Product.find(params[:id])
       @product.destroy
-      render json: {message: "Hola, lo hiciste! No mas producto!!!"}
+      render json: {message: "Hi! You did it! You deleted the product!!!"}
     end
 
 end
