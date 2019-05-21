@@ -1,6 +1,10 @@
 class Api::ProductsController < ApplicationController
 
   
+  
+
+    
+
 
   def index
     # @products = Product.where("name iLIKE ?", "%#{params[:search]}%").order(:id)
