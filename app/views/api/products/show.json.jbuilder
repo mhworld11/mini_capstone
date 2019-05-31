@@ -4,4 +4,4 @@
 # json.image @product.image_url
 # json.description @product.description
 
-json.partial! "product.json.jbuilder", product: @product
+json.partial! 'product.json.jbuilder', product: @product
